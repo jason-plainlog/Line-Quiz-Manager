@@ -47,7 +47,8 @@ class MyApp < Sinatra::Application
 		if text.length == 2
 			message['text'] = '查詢中'
 		else
-			message['text'] = '設定中'
+			set_quiz(text[1], text[2])
+			message['text'] = '新增完畢❤️'
 		end
 		
 
