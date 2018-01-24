@@ -47,10 +47,12 @@ class MyApp < Sinatra::Application
 		if text.length == 2
 			quizs = search_quiz(text[1])
 
-			message['text'] = text[1] + ':\n'
+			message['text'] = text[1] + ":\n"
 
-			for quiz in quizs do
-				message['text'] += quiz + "\n"
+			if quizs.length != 0
+				for quiz in quizs do
+					message['text'] += quiz + "\n"
+				end
 			end
 
 			message['text'] = '沒有考試是在查屁查啦❤️' if quizs.length == 0
