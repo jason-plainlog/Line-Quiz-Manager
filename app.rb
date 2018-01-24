@@ -57,8 +57,10 @@ class MyApp < Sinatra::Application
 			message['text'] = text[1] + ":\n"
 
 			if quizs.length != 0
-				for quiz in quizs do
-					message['text'] += quiz + "\n"
+				for i in 0..(quizs.length - 1) do
+					message['text'] += quizs[i]
+					if i != quizs.length - 1
+						message['text'] += "\n"
 				end
 			end
 
