@@ -48,7 +48,10 @@ class MyApp < Sinatra::Application
 			text: ''
 		}
 
-		if text.length == 2
+		if text.length == 2 && text[1] == '重設'
+			clean_quiz()
+			message['text'] = "重設完畢❤️"
+		elsif text.length == 2
 			quizs = search_quiz(text[1])
 
 			message['text'] = text[1] + ":\n"
@@ -60,9 +63,6 @@ class MyApp < Sinatra::Application
 			end
 
 			message['text'] = '沒有考試是在查屁查ㄛ❤️' if quizs.length == 0
-		elsif text.length == 2 && text[1] == '重設'
-			clean_quiz()
-			message['text'] = "重設完畢❤️"
 		elsif text.length == 3
 			set_quiz(text[1], text[2])
 			message['text'] = '新增完畢❤️'
