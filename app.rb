@@ -3,19 +3,19 @@ require 'line/bot'
 require 'redis'
 
 class MyApp < Sinatra::Application
-	redis = Redis.new(db:1)
+	$redis = $Redis.new(db:1)
 
 	def set_quiz(date, content)
-		redis.set(date, "[]") if !redis.exists(date)
+		$redis.set(date, "[]") if !$redis.exists(date)
 
-		data = JSON.parse(redis.get(date));
+		data = JSON.parse($redis.get(date));
 		data.push(content)
 
-		redis.set(date, JSON.generate(data))
+		$redis.set(date, JSON.generate(data))
 	end
 
 	def search_quiz(date)
-		data = redis.get(date)
+		data = $redis.get(date)
 
 		return nil if data == nil
 		
@@ -37,7 +37,7 @@ class MyApp < Sinatra::Application
 		reply_token = data['events'][0]['replyToken']
 		text = data['events'][0]['message']['text'].split
 
-		halt 200 if text[0] != "試務官" && text[0] != "考試長"
+		halt 200 if text[0] != "試務官" && text[0] != "考試長" || text.length != 2 && text.length != 3
 
 		message = {
 			type: 'text',
@@ -46,7 +46,7 @@ class MyApp < Sinatra::Application
 
 		if text.length == 2
 			message['text'] = '查詢中'
-		else
+		elsif text.length == 3
 			set_quiz(text[1], text[2])
 			message['text'] = '新增完畢❤️'
 		end
