@@ -17,7 +17,7 @@ class MyApp < Sinatra::Application
 	def search_quiz(date)
 		data = $redis.get(date)
 
-		return nil if data == nil
+		return [] if data == nil
 		
 		return JSON.parse(data)
 	end
