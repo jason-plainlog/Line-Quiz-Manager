@@ -19,7 +19,7 @@ class MyApp < Sinatra::Application
 
 		reply_token = data['events'][0]['replyToken']
 
-		halt 200 if data['events'][0]['mesage']['text'].split[0] != "試務官"
+		halt 200 if data['events'][0]['message']['text'].split[0] != "試務官"
 
 		message = {
 			type: 'text',
