@@ -45,12 +45,19 @@ class MyApp < Sinatra::Application
 		}
 
 		if text.length == 2
-			message['text'] = '查詢中'
+			quizs = search_quiz(text[1])
+
+			message['text'] = text[1] + ':\n'
+
+			for quiz in quizs do
+				message['text'] += quiz + "\n"
+			end
+
+			message['text'] = '沒有考試是在查屁查啦❤️' if quizs.length == 0
 		elsif text.length == 3
 			set_quiz(text[1], text[2])
 			message['text'] = '新增完畢❤️'
 		end
-		
 
 		response = client.reply_message(reply_token, message)
 
