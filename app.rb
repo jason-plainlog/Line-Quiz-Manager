@@ -15,11 +15,13 @@ class MyApp < Sinatra::Application
 			config.channel_token = 'xnich5DiM9M93HylaU+N8zLX1A5KwVCdgawIb1Z0YYAxIYM7S/+Hnrv6ZG3woopl8PYZ3RrUUT50f6Kqh8IdJUow9QPHUEd2dVv6eJPM8n1XJ3Cp3XCbb06ws4zei7HBX9mY06KYOgrkHlK67QfNHQdB04t89/1O/w1cDnyilFU='
 		}
 
-		reply_token = params['events'][0]['replyToken']
+		data = JSON.parse(request.body.read.to_s)
+
+		reply_token = data['events'][0]['replyToken']
 
 		message = {
 			type: 'text',
-			text: '已讀'
+			text: data['events'][0]['message']['text']
 		}
 
 		response = client.reply_message(reply_token, message)
