@@ -19,9 +19,11 @@ class MyApp < Sinatra::Application
 
 		reply_token = data['events'][0]['replyToken']
 
+		halt 200 if data['events'][0]['mesage']['text'].split[0] != "試務官"
+
 		message = {
 			type: 'text',
-			text: data['events'][0]['message']['text']
+			text: '你在跟我說話ㄇ？'
 		}
 
 		response = client.reply_message(reply_token, message)
