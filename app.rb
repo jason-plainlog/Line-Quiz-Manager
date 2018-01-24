@@ -3,7 +3,7 @@ require 'line/bot'
 require 'redis'
 
 class MyApp < Sinatra::Application
-	$redis = $Redis.new(db:1)
+	$redis = Redis.new(db:1)
 
 	def set_quiz(date, content)
 		$redis.set(date, "[]") if !$redis.exists(date)
