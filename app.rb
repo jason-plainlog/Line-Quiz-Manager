@@ -45,9 +45,9 @@ class MyApp < Sinatra::Application
 		}
 
 		if text.length == 2
-			message.text = '查詢中'
+			message['text'] = '查詢中'
 		else
-			message.text = '設定中'
+			message['text'] = '設定中'
 		end
 		
 
