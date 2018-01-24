@@ -22,6 +22,10 @@ class MyApp < Sinatra::Application
 		return JSON.parse(data)
 	end
 
+	def clean_quiz()
+		$redis.flushdb()
+	end
+
 	get '/' do
 		"Hello, This is 試務官"
 	end
@@ -55,7 +59,10 @@ class MyApp < Sinatra::Application
 				end
 			end
 
-			message['text'] = '沒有考試是在查屁查啦❤️' if quizs.length == 0
+			message['text'] = '沒有考試是在查屁查ㄛ❤️' if quizs.length == 0
+		elsif text.length == 2 && text[1] == '重設'
+			clean_quiz()
+			message['text'] = "重設完畢❤️"
 		elsif text.length == 3
 			set_quiz(text[1], text[2])
 			message['text'] = '新增完畢❤️'
