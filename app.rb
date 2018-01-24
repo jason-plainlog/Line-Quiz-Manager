@@ -5,6 +5,23 @@ require 'redis'
 class MyApp < Sinatra::Application
 	redis = Redis.new(db:1)
 
+	def set_quiz(date, content)
+		redis.set(date, "[]") if !redis.exists(date)
+
+		data = JSON.parse(redis.get(date));
+		data.push(content)
+
+		redis.set(date, JSON.generate(data))
+	end
+
+	def search_quiz(date)
+		data = redis.get(date)
+
+		return nil if data == nil
+		
+		return JSON.parse(data)
+	end
+
 	get '/' do
 		"Hello, This is 試務官"
 	end
@@ -18,13 +35,21 @@ class MyApp < Sinatra::Application
 		data = JSON.parse(request.body.read.to_s)
 
 		reply_token = data['events'][0]['replyToken']
+		text = data['events'][0]['message']['text'].split
 
-		halt 200 if data['events'][0]['message']['text'].split[0] != "試務官" && data['events'][0]['message']['text'].split[0] != "考試長"
+		halt 200 if text[0] != "試務官" && text[0] != "考試長"
 
 		message = {
 			type: 'text',
-			text: '你在跟我說話ㄇ？'
+			text: ''
 		}
+
+		if text.length == 2
+			message.text = '查詢中'
+		else
+			message.text = '設定中'
+		end
+		
 
 		response = client.reply_message(reply_token, message)
 
